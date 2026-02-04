@@ -1,0 +1,8 @@
+{
+  "smtp_host": "smtp.126.com",
+  "smtp_port": "465",
+  "smtp_user": "your_email@126.com",
+  "smtp_pass": "",
+  "email_to": "your_email@example.com",
+  "smtp_secure": true
+}

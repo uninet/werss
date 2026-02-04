@@ -1,0 +1,132 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Blogger {
+  id                  Int       @id @default(autoincrement())
+  name                String    @db.VarChar(100)
+  type                String    @db.VarChar(20)
+  url                 String    @unique @db.VarChar(500)
+  avatar              String?   @db.VarChar(500)
+  description         String?   @db.VarChar(500)
+  isActive            Boolean   @default(true) @map("is_active")
+  lastCheckedAt       DateTime? @map("last_checked_at")
+  fetchStatus         String?   @default("pending") @map("fetch_status") @db.VarChar(20)
+  fetchError          String?   @map("fetch_error") @db.Text
+  fetchFailCount      Int       @default(0) @map("fetch_fail_count")
+  lastFetchSuccessAt  DateTime? @map("last_fetch_success_at")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  contents            Content[]
+
+  @@index([type])
+  @@index([isActive])
+  @@index([fetchStatus])
+  @@index([createdAt])
+  @@map("bloggers")
+}
+
+model Content {
+  id          Int       @id @default(autoincrement())
+  bloggerId   Int       @map("blogger_id")
+  title       String    @db.VarChar(500)
+  content     String?   @db.Text
+  url         String    @db.VarChar(1000)
+  publishedAt DateTime? @map("published_at")
+  fetchedAt   DateTime  @default(now()) @map("fetched_at")
+  isNotified  Boolean   @default(false) @map("is_notified")
+
+  blogger     Blogger   @relation(fields: [bloggerId], references: [id], onDelete: Cascade)
+
+  @@index([bloggerId])
+  @@index([publishedAt])
+  @@index([fetchedAt])
+  @@index([isNotified])
+  @@index([bloggerId, isNotified])
+  @@index([bloggerId, publishedAt])
+  @@unique([bloggerId, url])
+  @@map("contents")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @db.VarChar(50)
+  password  String   @db.VarChar(255)
+  email     String?  @unique @db.VarChar(100)
+  avatar    String?  @db.VarChar(500)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Config {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique @db.VarChar(100)
+  value       String   @db.Text
+  description String?  @db.VarChar(500)
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("configs")
+}
+
+model ReadHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  contentId Int      @map("content_id")
+  readAt    DateTime @default(now()) @map("read_at")
+
+  @@unique([userId, contentId])
+  @@index([userId])
+  @@index([contentId])
+  @@map("read_history")
+}
+
+model UserSubscription {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  bloggerId   Int      @map("blogger_id")
+  subscribedAt DateTime @default(now()) @map("subscribed_at")
+
+  @@unique([userId, bloggerId])
+  @@index([userId])
+  @@index([bloggerId])
+  @@map("user_subscriptions")
+}
+
+model RssMarket {
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(200)
+  url             String   @db.VarChar(500)
+  description     String?  @db.VarChar(1000)
+  category        String   @db.VarChar(50)
+  icon            String?  @db.VarChar(500)
+  language        String?  @db.VarChar(10)
+  isFeatured      Boolean  @default(false) @map("is_featured")
+  subscriberCount Int      @default(0) @map("subscriber_count")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@index([isFeatured])
+  @@index([subscriberCount])
+  @@map("rss_market")
+}
+
+model EmailLog {
+  id            Int      @id @default(autoincrement())
+  sendDate      DateTime @map("send_date")
+  contentCount  Int      @map("content_count")
+  status        String   @db.VarChar(20)
+  errorMessage  String?  @map("error_message") @db.Text
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([sendDate])
+  @@index([status])
+  @@map("email_logs")
+}
