@@ -83,8 +83,8 @@ export class EmailService {
       `;
 
       for (const content of items) {
-        const time = content.published_at 
-          ? new Date(content.published_at).toLocaleString('zh-CN')
+        const time = content.publishedAt 
+          ? new Date(content.publishedAt).toLocaleString('zh-CN')
           : '未知时间';
 
         contentHtml += `
@@ -146,7 +146,7 @@ export class EmailService {
 
   private async groupContentsByBlogger(contents: Content[]): Promise<Record<string, Content[]>> {
     const grouped: Record<string, Content[]> = {};
-    const bloggerIds = [...new Set(contents.map(c => c.blogger_id))];
+    const bloggerIds = [...new Set(contents.map(c => c.bloggerId))];
     
     try {
       const bloggers = await prisma.blogger.findMany({
@@ -157,7 +157,7 @@ export class EmailService {
       const bloggerMap = new Map(bloggers.map(b => [b.id, b.name]));
 
       for (const content of contents) {
-        const bloggerName = bloggerMap.get(content.blogger_id) || '未知博主';
+        const bloggerName = bloggerMap.get(content.bloggerId) || '未知博主';
         if (!grouped[bloggerName]) {
           grouped[bloggerName] = [];
         }
@@ -167,7 +167,7 @@ export class EmailService {
       console.error('[EmailService] Error fetching bloggers:', error);
       // Fallback: Group by ID or Unknown
       for (const content of contents) {
-        const key = `Blogger #${content.blogger_id}`;
+        const key = `Blogger #${content.bloggerId}`;
         if (!grouped[key]) grouped[key] = [];
         grouped[key].push(content);
       }
@@ -242,13 +242,13 @@ export class EmailService {
 
       return contents.map(c => ({
         id: c.id,
-        blogger_id: c.bloggerId,
+        bloggerId: c.bloggerId,
         title: c.title,
         content: c.content || undefined,
         url: c.url,
-        published_at: c.publishedAt ? c.publishedAt.toISOString() : undefined,
-        fetched_at: c.fetchedAt.toISOString(),
-        is_notified: c.isNotified ? 1 : 0,
+        publishedAt: c.publishedAt ? c.publishedAt : undefined,
+        fetchedAt: c.fetchedAt,
+        isNotified: c.isNotified,
         blogger: c.blogger ? {
           id: c.blogger.id,
           name: c.blogger.name,
@@ -256,8 +256,8 @@ export class EmailService {
           url: c.blogger.url,
           avatar: c.blogger.avatar || undefined,
           description: c.blogger.description || undefined,
-          is_active: c.blogger.isActive ? 1 : 0,
-          created_at: c.blogger.createdAt.toISOString(),
+          isActive: c.blogger.isActive,
+          createdAt: c.blogger.createdAt,
           updated_at: c.blogger.updatedAt.toISOString()
         } : undefined
       }));

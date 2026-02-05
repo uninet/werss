@@ -5,13 +5,13 @@ import type { IContentRepository } from '../crawler/types';
 // Helper to map Prisma Content to App Content
 const mapContent = (c: any): Content => ({
   id: c.id,
-  blogger_id: c.bloggerId,
+  bloggerId: c.bloggerId,
   title: c.title,
   content: c.content || undefined,
   url: c.url,
-  published_at: c.publishedAt ? c.publishedAt.toISOString() : undefined,
-  fetched_at: c.fetchedAt.toISOString(),
-  is_notified: c.isNotified ? 1 : 0,
+  publishedAt: c.publishedAt ? c.publishedAt : undefined,
+  fetchedAt: c.fetchedAt,
+  isNotified: c.isNotified,
   // blogger: ... if needed
 });
 
@@ -23,14 +23,14 @@ const mapBlogger = (b: any): Blogger => ({
   url: b.url,
   avatar: b.avatar || undefined,
   description: b.description || undefined,
-  is_active: b.isActive ? 1 : 0,
-  last_checked_at: b.lastCheckedAt ? b.lastCheckedAt.toISOString() : undefined,
-  fetch_status: b.fetchStatus as any,
-  fetch_error: b.fetchError || undefined,
-  fetch_fail_count: b.fetchFailCount,
-  last_fetch_success_at: b.lastFetchSuccessAt ? b.lastFetchSuccessAt.toISOString() : undefined,
-  created_at: b.createdAt.toISOString(),
-  updated_at: b.updatedAt.toISOString(),
+  isActive: b.isActive,
+  lastCheckedAt: b.lastCheckedAt,
+  fetchStatus: b.fetchStatus as any,
+  fetchError: b.fetchError || undefined,
+  fetchFailCount: b.fetchFailCount,
+  lastFetchSuccessAt: b.lastFetchSuccessAt,
+  createdAt: b.createdAt,
+  updatedAt: b.updatedAt,
 });
 
 export class ContentRepository implements IContentRepository {
@@ -53,7 +53,7 @@ export class ContentRepository implements IContentRepository {
               title: content.title,
               content: content.content,
               url: content.url,
-              publishedAt: content.published_at ? new Date(content.published_at) : null,
+              publishedAt: content.publishedAt ? new Date(content.publishedAt) : null,
               isNotified: false,
             },
           });

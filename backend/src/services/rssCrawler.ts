@@ -185,13 +185,13 @@ export class RssCrawlerService {
             for (const item of data.items.slice(0, 20)) {
               contents.push({
                 id: 0,
-                blogger_id: blogger.id,
+                bloggerId: blogger.id,
                 title: item.title || '无标题',
                 content: item.content || item.description || '',
                 url: item.link || item.url || '',
-                published_at: item.pubDate || item.published || new Date().toISOString(),
-                fetched_at: new Date().toISOString(),
-                is_notified: 0,
+                publishedAt: item.pubDate || item.published || new Date(),
+                fetchedAt: new Date(),
+                isNotified: false,
               } as any);
             }
           }
@@ -353,13 +353,13 @@ export class RssCrawlerService {
         for (const item of items.slice(0, 20)) {
           contents.push({
             id: 0,
-            blogger_id: blogger.id,
+            bloggerId: blogger.id,
             title: item.title || '无标题',
             content: item.content_html || item.content_text || item.content || item.description || '',
             url: item.url || item.link || item.id || '',
-            published_at: item.date_published || item.published || item.date || new Date().toISOString(),
-            fetched_at: new Date().toISOString(),
-            is_notified: 0,
+            publishedAt: item.date_published || item.published || item.date || new Date(),
+            fetchedAt: new Date(),
+            isNotified: false,
           } as any);
         }
       }
@@ -368,13 +368,13 @@ export class RssCrawlerService {
         for (const item of data.items.slice(0, 20)) {
           contents.push({
             id: 0,
-            blogger_id: blogger.id,
+            bloggerId: blogger.id,
             title: item.title || '无标题',
             content: item.content || item.description || '',
             url: item.link || item.url || '',
-            published_at: item.pubDate || item.published || new Date().toISOString(),
-            fetched_at: new Date().toISOString(),
-            is_notified: 0,
+            publishedAt: item.pubDate || item.published || new Date(),
+            fetchedAt: new Date(),
+            isNotified: false,
           });
         }
       }
@@ -419,26 +419,26 @@ export class RssCrawlerService {
     if (item['@_href']) {
       return {
         id: 0,
-        blogger_id: blogger.id,
+        bloggerId: blogger.id,
         title: item.title || '无标题',
         content: item.content || item.summary || item.description || '',
         url: item.link?.['@_href'] || item.id || '',
-        published_at: item.updated || item.published || item.pubDate || new Date().toISOString(),
-        fetched_at: new Date().toISOString(),
-        is_notified: 0,
+        publishedAt: item.updated || item.published || item.pubDate || new Date(),
+        fetchedAt: new Date(),
+        isNotified: false,
       } as any;
     }
 
     // 处理 RSS 2.0 格式
     return {
       id: 0,
-      blogger_id: blogger.id,
+      bloggerId: blogger.id,
       title: item.title || '无标题',
       content: item['content:encoded'] || item.description || item.content || '',
       url: item.link || item.guid || item['@_href'] || '',
-      published_at: item.pubDate || item.pubdate || item.published || new Date().toISOString(),
-      fetched_at: new Date().toISOString(),
-      is_notified: 0,
+      publishedAt: item.pubDate || item.pubdate || item.published || new Date(),
+      fetchedAt: new Date(),
+      isNotified: false,
     } as any;
   }
 }

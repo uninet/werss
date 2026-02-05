@@ -75,13 +75,13 @@ export abstract class BaseCrawler implements ICrawler {
   ): Content {
     return {
       id: 0,
-      blogger_id: bloggerId,
+      bloggerId: bloggerId,
       title,
       content,
       url,
-      published_at: publishedAt,
-      fetched_at: new Date().toISOString(),
-      is_notified: 0,
+      publishedAt: publishedAt,
+      fetchedAt: new Date().toISOString(),
+      isNotified: false,
     };
   }
 
