@@ -408,7 +408,7 @@ export class WeChatCrawlerService {
             id: 0,
             blogger_id: blogger.id,
             title: title,
-            content: description,
+            content: summary,
             url: link,
             published_at: publishedAt,
             fetched_at: new Date().toISOString(),

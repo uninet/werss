@@ -64,3 +64,4 @@ install-dev-skills.sh
 VERCEL_DEPLOYMENT_TEST_PLAN.md
 VERCEL_FIX_SUMMARY.md
 test_blogger.py
+.vercel

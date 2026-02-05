@@ -7,7 +7,6 @@
     "backend:start": "npm --prefix backend start",
     "backend:dev": "npm --prefix backend run dev",
     "frontend:dev": "npm --prefix frontend run dev",
-    "postinstall": "prisma generate --schema=./backend/prisma/schema.prisma",
     "build": "npm --prefix frontend install && npm --prefix frontend run build",
     "vercel-build": "npm install && cd backend && npm ci && npm run build && cd .. && npm --prefix frontend run build"
   },
