@@ -15,8 +15,8 @@ router.get('/stats/overview', asyncHandler(bloggerController.getStats));
 // 获取单个博主
 router.get('/:id', validateId, asyncHandler(bloggerController.findById));
 
-// 创建博主
-router.post('/', authMiddleware, bloggerValidation.create, asyncHandler(bloggerController.create));
+// 创建博主 (公开接口，无需认证)
+router.post('/', bloggerValidation.create, asyncHandler(bloggerController.create));
 
 // 更新博主
 router.put('/:id', authMiddleware, validateId, bloggerValidation.update, asyncHandler(bloggerController.update));

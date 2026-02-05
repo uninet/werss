@@ -70,6 +70,17 @@ app.use(`${apiPrefix}/stats`, statsRouter);
 app.use(`${apiPrefix}/rss-market`, rssMarketRouter);
 app.use(`${apiPrefix}/config`, configRouter);
 
+// 404处理 - 放在所有路由之后、错误处理之前
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: '接口不存在'
+  });
+});
+
+// 错误处理中间件
+app.use(errorHandler);
+
 // 健康检查
 app.get('/health', (req, res) => {
   res.json({
@@ -87,17 +98,7 @@ if (!isDevelopment) {
   app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
   });
-} else {
-  app.use((req, res) => {
-    res.status(404).json({
-      success: false,
-      message: '接口不存在'
-    });
-  });
 }
-
-// 错误处理中间件
-app.use(errorHandler);
 
 // 启动服务器
 if (process.env.NODE_ENV !== 'test') {

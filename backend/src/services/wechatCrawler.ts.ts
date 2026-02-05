@@ -155,7 +155,7 @@ export class WeChatCrawlerService {
         contents.push(this.createContent(item, blogger));
       }
       
-      console.log(`[WeChat Crawl] wechat2rss found ${contents.length} items`);
+      console.log(`[WeChat Crawl] wechat2rss found ${contents.length}" items");
     } catch (error: any) {
       console.log(`[WeChat Crawl] wechat2rss failed: ${error.message}`);
     }
@@ -199,7 +199,7 @@ export class WeChatCrawlerService {
         }
         
         if (contents.length > 0) {
-          console.log(`[WeChat Crawl] RSSHub ${mirror} found ${contents.length} items`);
+          console.log(`[WeChat Crawl] RSSHub ${mirror} found ${contents.length}" items");
           break;
         }
       } catch (error: any) {
@@ -402,22 +402,32 @@ export class WeChatCrawlerService {
           date.setHours(date.getHours() - hours);
           publishedAt = date.toISOString();
         }
-        
+
         if (title && link) {
           contents.push({
             id: 0,
             blogger_id: blogger.id,
             title: title,
-            content: summary || title,
+            content: description,
+            url: link,
+            published_at: publishedAt,
+            fetched_at: new Date().toISOString(),
+            is_notified: 0,
+          } as any);
+        } else {
+          contents.push({
+            id: 0,
+            blogger_id: blogger.id,
+            title: title,
+            content: summary,
             url: link.startsWith('http') ? link : `https://weixin.sogou.com${link}`,
             published_at: publishedAt,
             fetched_at: new Date().toISOString(),
             is_notified: 0,
-          });
+          } as any);
         }
-      });
-      
-      console.log(`[WeChat Crawl] Sogou found ${contents.length} items`);
+      }
+
     } catch (error: any) {
       console.log(`[WeChat Crawl] Sogou failed: ${error.message}`);
     }
@@ -466,7 +476,7 @@ export class WeChatCrawlerService {
         published_at: item.updated || item.published || new Date().toISOString(),
         fetched_at: new Date().toISOString(),
         is_notified: 0,
-      };
+      } as any;
     }
     
     // 处理 RSS 2.0 格式
@@ -476,10 +486,10 @@ export class WeChatCrawlerService {
       title: item.title || '无标题',
       content: item['content:encoded'] || item.description || item.content || '',
       url: item.link || item.guid || '',
-      published_at: item.pubDate || item.pubdate || new Date().toISOString(),
+      published_at: item.pubDate || new Date().toISOString(),
       fetched_at: new Date().toISOString(),
       is_notified: 0,
-    };
+    } as any;
   }
 }
 

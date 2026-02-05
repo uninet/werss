@@ -1,0 +1,11 @@
+Test Case ID,Category,Test Description,Priority,Status,Execution Date,Result,Notes,Time Taken,Bug ID
+TC-WF-001,E2E Workflow,Complete new user onboarding flow,P0,In Progress,2026-02-05,,
+TC-WF-002,E2E Workflow,User daily article reading,P0,Pending,2026-02-05,,
+TC-WF-003,E2E Workflow,Add and manage multiple RSS sources,P1,Pending,2026-02-05,,
+TC-WF-004,E2E Workflow,Search and filtering flow,P1,Pending,2026-02-05,,
+TC-WF-005,E2E Workflow,Cross-page data consistency check,P0,Pending,2026-02-05,,
+TC-WF-006,E2E Workflow,Discover and add trending content,P1,Pending,2026-02-05,,
+TC-WF-007,E2E Workflow,Personalization settings flow,P2,Pending,2026-02-05,,
+TC-WF-008,E2E Workflow,Handle network exceptions,P1,Pending,2026-02-05,,
+TC-WF-009,E2E Workflow,Multi-tab operations,P2,Pending,2026-02-05,,
+TC-WF-010,E2E Workflow,Long-term usage test,P2,Pending,2026-02-05,,

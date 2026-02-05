@@ -181,7 +181,7 @@ const UsersIcon = () => h('svg', { class: 'w-5 h-5', fill: 'none', viewBox: '0 0
 const navItems = ref([
   { path: '/', name: '首页', icon: HomeIcon },
   { path: '/contents', name: '内容列表', icon: DocumentTextIcon, badge: 'New' },
-  { path: '/bloggers', name: '博主管理', icon: UsersIcon },
+  { path: '/bloggers', name: '频道管理', icon: UsersIcon },
 ])
 </script>
 

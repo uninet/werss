@@ -2,64 +2,59 @@ import { Request, Response } from 'express';
 import prisma from '../models/prisma';
 
 export const statsController = {
-  // 获取统计数据
   getAll: async (req: Request, res: Response) => {
     try {
-      // 博主统计
-      const bloggerStatsResult = await prisma.$queryRaw<any[]>`
-        SELECT 
-          COUNT(*)::int as total,
-          SUM(CASE WHEN type = 'wechat' THEN 1 ELSE 0 END)::int as wechat_count,
-          SUM(CASE WHEN type = 'github' THEN 1 ELSE 0 END)::int as github_count,
-          SUM(CASE WHEN is_active = true THEN 1 ELSE 0 END)::int as active_count
-        FROM bloggers
-      `;
-      const bloggerStats = bloggerStatsResult[0];
+      const bloggers = await prisma.blogger.findMany();
+      const bloggerStats = {
+        total: bloggers.length,
+        wechat_count: bloggers.filter(b => b.type === 'wechat').length,
+        github_count: bloggers.filter(b => b.type === 'github').length,
+        active_count: bloggers.filter(b => b.isActive).length
+      };
 
-      // 内容统计
-      const contentStatsResult = await prisma.$queryRaw<any[]>`
-        SELECT 
-          COUNT(*)::int as total,
-          SUM(CASE WHEN is_notified = false THEN 1 ELSE 0 END)::int as unread_count,
-          SUM(CASE WHEN DATE(fetched_at) = CURRENT_DATE THEN 1 ELSE 0 END)::int as today_count
-        FROM contents
-      `;
-      const contentStats = contentStatsResult[0];
+      const contents = await prisma.content.findMany();
+      const contentStats = {
+        total: contents.length,
+        unread_count: contents.filter(c => !c.isNotified).length,
+        today_count: contents.filter(c => {
+          const today = new Date();
+          const fetched = new Date(c.fetchedAt);
+          return fetched.getDate() === today.getDate() &&
+                 fetched.getMonth() === today.getMonth() &&
+                 fetched.getFullYear() === today.getFullYear();
+        }).length
+      };
 
-      // 最近7天内容趋势
-      const weeklyTrend = await prisma.$queryRaw`
-        SELECT 
-          TO_CHAR(fetched_at, 'YYYY-MM-DD') as date,
-          COUNT(*)::int as count
-        FROM contents
-        WHERE fetched_at >= CURRENT_DATE - INTERVAL '7 days'
-        GROUP BY TO_CHAR(fetched_at, 'YYYY-MM-DD')
-        ORDER BY date
-      `;
+      const now = new Date();
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const recentContents = contents.filter(c => new Date(c.fetchedAt) >= sevenDaysAgo);
 
-      // 邮件发送统计
-      const emailStatsResult = await prisma.$queryRaw<any[]>`
-        SELECT 
-          COUNT(*)::int as total_sent,
-          SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END)::int as success_count,
-          SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)::int as failed_count
-        FROM email_logs
-      `;
-      const emailStats = emailStatsResult[0];
+      const weeklyTrend: any[] = [];
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+        const dateStr = date.toISOString().split('T')[0];
+        const count = recentContents.filter(c =>
+          new Date(c.fetchedAt).toISOString().split('T')[0] === dateStr
+        ).length;
+        weeklyTrend.push({ date: dateStr, count });
+      }
 
-      // 热门博主（内容最多的前5个）
-      const topBloggers = await prisma.$queryRaw`
-        SELECT 
-          b.id,
-          b.name,
-          b.type,
-          COUNT(c.id)::int as content_count
-        FROM bloggers b
-        LEFT JOIN contents c ON b.id = c.blogger_id
-        GROUP BY b.id, b.name, b.type
-        ORDER BY content_count DESC
-        LIMIT 5
-      `;
+      const emailLogs = await prisma.emailLog.findMany();
+      const emailStats = {
+        total_sent: emailLogs.length,
+        success_count: emailLogs.filter(e => e.status === 'success').length,
+        failed_count: emailLogs.filter(e => e.status === 'failed').length
+      };
+
+      const bloggerContentCounts = bloggers.map(b => ({
+        id: b.id,
+        name: b.name,
+        type: b.type,
+        content_count: contents.filter(c => c.bloggerId === b.id).length
+      }));
+      const topBloggers = bloggerContentCounts
+        .sort((a, b) => b.content_count - a.content_count)
+        .slice(0, 5);
 
       res.json({
         success: true,
@@ -79,44 +74,48 @@ export const statsController = {
     }
   },
 
-  // 获取每日汇总
   getDailySummary: async (req: Request, res: Response) => {
     try {
       const { date } = req.query;
       const targetDate = (date as string) || new Date().toISOString().split('T')[0];
 
-      // 当日内容
-      const dailyContents = await prisma.$queryRaw<any[]>`
-        SELECT c.*, b.name as blogger_name, b.type as blogger_type
-        FROM contents c
-        JOIN bloggers b ON c.blogger_id = b.id
-        WHERE DATE(c.fetched_at) = DATE(${targetDate}::date)
-        ORDER BY c.published_at DESC
-      `;
+      const allContents = await prisma.content.findMany({
+        include: {
+          blogger: {
+            select: {
+              name: true,
+              type: true
+            }
+          }
+        }
+      });
 
-      // 按类型统计
-      const byType = await prisma.$queryRaw`
-        SELECT 
-          b.type,
-          COUNT(*)::int as count
-        FROM contents c
-        JOIN bloggers b ON c.blogger_id = b.id
-        WHERE DATE(c.fetched_at) = DATE(${targetDate}::date)
-        GROUP BY b.type
-      `;
+      const dailyContents = allContents.filter(c =>
+        new Date(c.fetchedAt).toISOString().split('T')[0] === targetDate
+      );
 
-      // Helper to map content
+      const byTypeMap = new Map<string, number>();
+      dailyContents.forEach(c => {
+        const type = c.blogger.type;
+        byTypeMap.set(type, (byTypeMap.get(type) || 0) + 1);
+      });
+
+      const byType = Array.from(byTypeMap.entries()).map(([type, count]) => ({
+        type,
+        count
+      }));
+
       const mapContent = (c: any) => ({
         id: c.id,
-        blogger_id: c.blogger_id,
+        blogger_id: c.bloggerId,
         title: c.title,
         content: c.content,
         url: c.url,
-        published_at: c.published_at,
-        fetched_at: c.fetched_at,
-        is_notified: c.is_notified ? 1 : 0,
-        blogger_name: c.blogger_name,
-        blogger_type: c.blogger_type
+        published_at: c.publishedAt,
+        fetched_at: c.fetchedAt,
+        is_notified: c.isNotified ? 1 : 0,
+        blogger_name: c.blogger.name,
+        blogger_type: c.blogger.type
       });
 
       res.json({

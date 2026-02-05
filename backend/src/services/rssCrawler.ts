@@ -180,21 +180,21 @@ export class RssCrawlerService {
           timeout: 15000,
         });
 
-        const data = response.data;
-        if (data.status === 'ok' && data.items) {
-          for (const item of data.items.slice(0, 20)) {
-            contents.push({
-              id: 0,
-              blogger_id: blogger.id,
-              title: item.title || '无标题',
-              content: item.content || item.description || '',
-              url: item.link || item.url || '',
-              published_at: item.pubDate || item.published || new Date().toISOString(),
-              fetched_at: new Date().toISOString(),
-              is_notified: 0,
-            });
+          const data = response.data;
+          if (data.status === 'ok' && data.items) {
+            for (const item of data.items.slice(0, 20)) {
+              contents.push({
+                id: 0,
+                blogger_id: blogger.id,
+                title: item.title || '无标题',
+                content: item.content || item.description || '',
+                url: item.link || item.url || '',
+                published_at: item.pubDate || item.published || new Date().toISOString(),
+                fetched_at: new Date().toISOString(),
+                is_notified: 0,
+              } as any);
+            }
           }
-        }
 
         if (contents.length > 0) {
           console.log(`[RSS Crawl] RSS2JSON found ${contents.length} items`);
@@ -360,7 +360,7 @@ export class RssCrawlerService {
             published_at: item.date_published || item.published || item.date || new Date().toISOString(),
             fetched_at: new Date().toISOString(),
             is_notified: 0,
-          });
+          } as any);
         }
       }
       // RSS2JSON 格式
@@ -426,7 +426,7 @@ export class RssCrawlerService {
         published_at: item.updated || item.published || item.pubDate || new Date().toISOString(),
         fetched_at: new Date().toISOString(),
         is_notified: 0,
-      };
+      } as any;
     }
 
     // 处理 RSS 2.0 格式
@@ -439,7 +439,7 @@ export class RssCrawlerService {
       published_at: item.pubDate || item.pubdate || item.published || new Date().toISOString(),
       fetched_at: new Date().toISOString(),
       is_notified: 0,
-    };
+    } as any;
   }
 }
 

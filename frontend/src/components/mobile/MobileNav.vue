@@ -151,7 +151,7 @@ const ZhihuIcon = () => h('svg', { class: 'w-6 h-6', fill: 'currentColor', viewB
 const mainNavItems = [
   { path: '/', name: '首页', shortName: '首页', icon: HomeIcon },
   { path: '/contents', name: '内容', shortName: '内容', icon: DocumentTextIcon },
-  { path: '/bloggers', name: '博主', shortName: '博主', icon: UsersIcon },
+  { path: '/bloggers', name: '频道', shortName: '频道', icon: UsersIcon },
 ]
 
 // 更多菜单项

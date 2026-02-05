@@ -1,23 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 
-// 根据环境选择配置
-let prisma: PrismaClient;
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-// 检查是否在 Vercel 环境
-if (process.env.VERCEL === '1') {
-  // Vercel 环境 - 使用标准 PrismaClient
-  // 数据库连接字符串通过环境变量 DATABASE_URL 自动读取
-  prisma = new PrismaClient({
-    log: ['error', 'warn'],
-  });
-} else {
-  // 本地或传统服务器环境
-  prisma = new PrismaClient({
-    log: ['error', 'warn'],
-  });
+const prisma = globalForPrisma.prisma || new PrismaClient({
+  log: ['error', 'warn'],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
 }
 
-// 连接测试
 async function testConnection() {
   try {
     await prisma.$connect();
@@ -28,6 +22,5 @@ async function testConnection() {
   }
 }
 
-// 导出 prisma 实例和测试函数
 export { prisma, testConnection };
 export default prisma;

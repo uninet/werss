@@ -5,7 +5,7 @@ export const contentController = {
   // 获取所有内容
   findAll: async (req: Request, res: Response) => {
     const { bloggerId, type, search, page, pageSize } = req.query;
-
+ 
     const filter = {
       bloggerId: bloggerId ? parseInt(bloggerId as string) : undefined,
       type: type as string,
@@ -20,7 +20,13 @@ export const contentController = {
     const result = await contentService.findAll(filter, pagination);
     res.json({
       success: true,
-      data: result
+      data: result.items,
+      pagination: {
+        total: result.total,
+        page: result.page,
+        pageSize: result.pageSize,
+        totalPages: result.totalPages
+      }
     });
   },
 
