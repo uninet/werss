@@ -1,0 +1,3 @@
+# Don't ignore build outputs for Vercel deployment
+!backend/dist
+!frontend/dist
