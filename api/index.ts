@@ -1,6 +1,6 @@
 import serverless from 'serverless-http';
 import { createServer } from 'http';
-import app from '../backend/dist/index.js';
+import app from './backend-dist/index.js';
 
 // Vercel Serverless Function handler
 const handler = serverless(app, {

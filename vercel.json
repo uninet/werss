@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd backend && npm ci && npm run build && cd ../frontend && npm install && npx vite build",
+  "buildCommand": "cd backend && npm ci && npm run build && cd .. && cp -r backend/dist api/backend-dist && cd frontend && npm install && npx vite build",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {"source": "/api/(.*)", "destination": "/api/index"},
@@ -20,7 +20,7 @@
     "api/index.ts": {
       "maxDuration": 30,
       "memory": 1024,
-      "includeFiles": "backend/dist/**"
+      "includeFiles": "api/backend-dist/**"
     }
   },
   "env": {
