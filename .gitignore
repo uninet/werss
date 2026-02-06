@@ -21,6 +21,8 @@ database/
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
 
 # Logs
 logs/
@@ -28,6 +30,7 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+server.log
 
 # IDE
 .vscode/
@@ -43,25 +46,60 @@ Thumbs.db
 # Testing
 coverage/
 .nyc_output/
+tests/
+*_test.py
+test_*.py
+functional_test.py
+manual_test.py
 
 # Misc
 .cache/
 .temp/
+.ruff_cache/
 
-# AI & Agent files（不提交）
+# ============================================
+# AI & Agent Development Files (不提交)
+# ============================================
+
+# AI Agent 配置和工作区
 .agent/
 .trae/
+.claude/
+.cursor/
+.trellis/
+
+# AI 相关文档和技能
 .github/SKILL.md
 .github/agents.md
+.github/dev-workflow-skills.md
 AGENTS.md
+design-system/
 
-# Development tools & scripts（不提交）
+# 开发工具脚本
 auto_login.exp
 deploy-fix.sh
 install-dev-skills.sh
+install.sh
+docker-deploy.sh
+start.sh
+deploy.sh
+test-vercel-build.sh
 
-# Deployment docs（不提交）
+# 部署和测试文档
 VERCEL_DEPLOYMENT_TEST_PLAN.md
+VERCEL_DEPLOYMENT_CHECKLIST.md
+VERCEL_DEPLOYMENT_GUIDE.md
+VERCEL_DEPLOY_NEW.md
 VERCEL_FIX_SUMMARY.md
-test_blogger.py
-.vercel
+DEPLOYMENT_ISSUES_SUMMARY.md
+DOCKER_DEPLOY.md
+DEPLOY.md
+AI_TRACKER_TEST_REPORT.md
+P0-TEST-REPORT.md
+E2E-WORKFLOW-EXECUTION-TRACKING.csv
+
+# 临时文件
+1~
+
+# Vercel 配置（如果不需要）
+.vercel/
