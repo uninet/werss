@@ -79,8 +79,8 @@ export abstract class BaseCrawler implements ICrawler {
       title,
       content,
       url,
-      publishedAt: publishedAt,
-      fetchedAt: new Date().toISOString(),
+      publishedAt: new Date(publishedAt),
+      fetchedAt: new Date(),
       isNotified: false,
     };
   }

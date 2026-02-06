@@ -71,7 +71,7 @@ class CrawlerServiceFacade {
     return bloggers.map(blogger => ({
       id: blogger.id,
       name: blogger.name,
-      isActive: blogger.is_active === 1
+      isActive: blogger.isActive === true
     }));
   }
 
@@ -82,7 +82,7 @@ class CrawlerServiceFacade {
   async cleanupInactiveBloggers(): Promise<{ id: number; name: string }[]> {
     const repository = new ContentRepository();
     const allBloggers = await repository.getAllBloggers();
-    const inactiveBloggers = allBloggers.filter(b => b.isActive !== 1);
+    const inactiveBloggers = allBloggers.filter(b => !b.isActive);
     
     // 这里可以实现实际的清理逻辑
     // 目前只是返回不活跃的博主列表

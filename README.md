@@ -49,11 +49,27 @@ GITHUB_TOKEN=your_github_token
 
 ### 启动
 
+**方式一：本地开发**
+
 ```bash
 ./start.sh
 ```
 
 访问 http://localhost:5173 使用系统。
+
+**方式二：Docker 部署（推荐）**
+
+```bash
+# 一键部署
+./docker-deploy.sh
+
+# 或手动部署
+docker-compose up -d --build
+```
+
+访问 http://localhost:3000 使用系统。
+
+详细部署文档请查看 [DOCKER_DEPLOY.md](./DOCKER_DEPLOY.md)
 
 ## 📁 项目结构
 

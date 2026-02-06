@@ -28,6 +28,12 @@ jobs:
     - name: Generate Prisma Client
       run: cd backend && npx prisma generate
     
+    - name: Type Check Backend
+      run: cd backend && npx tsc --noEmit
+    
+    - name: Type Check Frontend
+      run: cd frontend && npx vue-tsc --noEmit
+    
     - name: Build Backend
       run: cd backend && npm run build
     
@@ -35,7 +41,7 @@ jobs:
       run: cd frontend && npm run build
     
     - name: Run Tests
-      run: cd backend && npm test || true
+      run: cd backend && npm test
 
   deploy:
     needs: test

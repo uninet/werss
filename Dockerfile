@@ -12,11 +12,15 @@ WORKDIR /app
 COPY backend/package*.json ./
 RUN npm ci
 COPY backend/ ./
+RUN npx prisma generate
 RUN npm run build
 RUN npm prune --production
 
 # 复制前端构建产物
 COPY --from=frontend-builder /app/frontend/dist ./public
+
+# 安装 curl 用于健康检查
+RUN apk add --no-cache curl
 
 # 暴露端口
 EXPOSE 3000
