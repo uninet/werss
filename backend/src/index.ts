@@ -5,8 +5,8 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-// import { schedulerService } from './services/scheduler';
-import { errorHandler } from './utils/errors';
+// import { schedulerService } from './services/scheduler.js';
+import { errorHandler } from './utils/errors.js';
 
 // Fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -20,13 +20,13 @@ if (process.env.VERCEL === '1') {
 }
 
 // 导入路由
-import bloggersRouter from './routes/bloggers';
-import contentsRouter from './routes/contents';
-import schedulerRouter from './routes/scheduler';
-import statsRouter from './routes/stats';
-import rssMarketRouter from './routes/rss-market';
-import configRouter from './routes/config';
-import authRouter from './routes/auth';
+import bloggersRouter from './routes/bloggers.js';
+import contentsRouter from './routes/contents.js';
+import schedulerRouter from './routes/scheduler.js';
+import statsRouter from './routes/stats.js';
+import rssMarketRouter from './routes/rss-market.js';
+import configRouter from './routes/config.js';
+import authRouter from './routes/auth.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
