@@ -27,15 +27,6 @@ export interface CreateContentInput {
   publishedAt?: Date;
 }
 
-declare module 'express' {
-  interface Request {
-    user?: {
-      id: number;
-      username: string;
-    };
-  }
-}
-
 export type FlexibleBlogger = Omit<Blogger, 'isActive' | 'lastCheckedAt' | 'fetchStatus' | 'fetchError' | 'fetchFailCount' | 'lastFetchSuccessAt'> & {
   isActive?: boolean;
   is_active?: boolean;
