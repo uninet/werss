@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { schedulerService } from './services/scheduler';
+// import { schedulerService } from './services/scheduler';
 import { errorHandler } from './utils/errors';
 
 // Fix __dirname for ES modules
@@ -107,7 +107,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Environment: ${isDevelopment ? 'development' : 'production'}`);
 
     // 启动调度器
-    schedulerService.start();
+    // schedulerService.start();
   });
 }
 
