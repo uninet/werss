@@ -101,7 +101,7 @@ if (!isDevelopment) {
 }
 
 // 启动服务器
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`Environment: ${isDevelopment ? 'development' : 'production'}`);
