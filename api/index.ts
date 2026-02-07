@@ -1,26 +1,39 @@
 import serverless from 'serverless-http';
+import express from 'express';
 
-// 动态导入以捕获错误
-let app;
-try {
-  const module = await import('./backend-dist/index.js');
-  app = module.default;
-  console.log('[API] Backend app loaded successfully');
-} catch (error) {
-  console.error('[API] Failed to load backend app:', error);
-  // 创建一个简单的错误处理应用
-  const express = await import('express');
-  app = express.default();
-  app.use((req, res) => {
-    res.status(500).json({
-      error: 'Backend initialization failed',
-      message: error.message,
-      stack: error.stack
+// 创建一个包装函数来处理异步导入
+async function createHandler() {
+  try {
+    // 尝试导入后端应用
+    const module = await import('./backend-dist/index.js');
+    const app = module.default;
+    console.log('[API] Backend app loaded successfully');
+    return serverless(app);
+  } catch (error) {
+    console.error('[API] Failed to load backend app:', error);
+    
+    // 创建错误处理应用
+    const errorApp = express();
+    errorApp.use((req, res) => {
+      res.status(500).json({
+        error: 'Backend initialization failed',
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      });
     });
-  });
+    
+    return serverless(errorApp);
+  }
 }
 
-// Vercel Serverless Function handler
-const handler = serverless(app);
+// 导出处理器
+let handlerPromise = null;
 
-export default handler;
+export default async function handler(req, res) {
+  if (!handlerPromise) {
+    handlerPromise = createHandler();
+  }
+  
+  const serverlessHandler = await handlerPromise;
+  return serverlessHandler(req, res);
+}
