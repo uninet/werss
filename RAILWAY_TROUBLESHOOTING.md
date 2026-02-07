@@ -54,7 +54,7 @@ NODE_ENV=production
 
 ---
 
-## 🐛 常见问题排查
+## ✅ 已修复的问题
 
 ### 问题 1：Prisma Schema 找不到
 **错误信息**：
@@ -62,8 +62,24 @@ NODE_ENV=production
 Error: Could not find Prisma Schema that is required for this command.
 ```
 
-**解决方案**：
-✅ 已通过 `nixpacks.toml` 修复
+**解决方案**：✅ 已通过 `nixpacks.toml` 修复
+
+---
+
+### 问题 2：Node.js 版本不兼容
+**错误信息**：
+```
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'cheerio@1.2.0',
+npm warn EBADENGINE   required: { node: '>=20.18.1' },
+npm warn EBADENGINE   current: { node: 'v18.20.5', npm: '10.8.2' }
+}
+```
+
+**解决方案**：✅ 已修复
+- 修改 `nixpacks.toml` 使用 `nodejs_20`
+- 添加 `package.json` engines 字段指定 Node >= 20.18.1
+- 添加 `--legacy-peer-deps` 避免依赖冲突
 
 ---
 
