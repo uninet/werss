@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npx prisma generate && esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=dist/bundle.js --external:@prisma/client --external:pg-native --external:.prisma/client",
+    "build": "npx prisma generate && npx esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=dist/bundle.js --external:@prisma/client --external:pg-native --external:.prisma/client",
     "build:tsc": "npx prisma generate && tsc",
     "start": "tsx src/index.ts",
     "db:push": "npx prisma db push",
