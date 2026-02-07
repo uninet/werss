@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { schedulerController } from '../controllers/scheduler.controller';
-import { asyncHandler } from '../utils/errors';
+import { schedulerController } from '../controllers/scheduler.controller.js';
+import { asyncHandler } from '../utils/errors.js';
 
 const router = Router();
 

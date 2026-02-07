@@ -1,7 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
-import { BaseCrawler } from './base-crawler';
-import type { Blogger, Content } from '../../../types';
-import type { ICrawlerConfig } from '../types';
+import { BaseCrawler } from './base-crawler.js';
+import type { Blogger, Content } from '../../../types/index.js';
+import type { ICrawlerConfig } from '../types.js';
 
 interface RSSItem {
   title?: string;

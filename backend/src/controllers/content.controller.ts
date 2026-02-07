@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { contentService } from '../services/content-service';
+import { contentService } from '../services/content-service.js';
 
 export const contentController = {
   // 获取所有内容

@@ -1,12 +1,12 @@
-import { CrawlerOrchestrator } from './crawler/crawler-orchestrator';
-import { ContentRepository } from './repositories/content-repository';
-import { GitHubCrawler } from './crawler/strategies/github-crawler';
-import { WeChatCrawler } from './crawler/strategies/wechat-crawler';
-import { RSSCrawler } from './crawler/strategies/rss-crawler';
-import { ZhihuCrawler } from './crawler/strategies/zhihu-crawler';
-import { createConfig } from './crawler/config';
-import type { Blogger, Content } from '../types';
-import type { CrawlResult } from './crawler/types';
+import { CrawlerOrchestrator } from './crawler/crawler-orchestrator.js';
+import { ContentRepository } from './repositories/content-repository.js';
+import { GitHubCrawler } from './crawler/strategies/github-crawler.js';
+import { WeChatCrawler } from './crawler/strategies/wechat-crawler.js';
+import { RSSCrawler } from './crawler/strategies/rss-crawler.js';
+import { ZhihuCrawler } from './crawler/strategies/zhihu-crawler.js';
+import { createConfig } from './crawler/config.js';
+import type { Blogger, Content } from '../types/index.js';
+import type { CrawlResult } from './crawler/types.js';
 
 /**
  * 爬虫服务

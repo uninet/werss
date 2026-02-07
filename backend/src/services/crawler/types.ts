@@ -1,4 +1,4 @@
-import type { Blogger, Content } from '../../types';
+import type { Blogger, Content } from '../../types/index.js';
 
 export interface ICrawler {
   readonly type: string;

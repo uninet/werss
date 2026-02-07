@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { bloggerController } from '../controllers/blogger.controller';
-import { authMiddleware } from '../middleware/auth';
-import { validateId, bloggerValidation } from '../middleware/validation';
-import { asyncHandler } from '../utils/errors';
+import { bloggerController } from '../controllers/blogger.controller.js';
+import { authMiddleware } from '../middleware/auth.js';
+import { validateId, bloggerValidation } from '../middleware/validation.js';
+import { asyncHandler } from '../utils/errors.js';
 
 const router = Router();
 

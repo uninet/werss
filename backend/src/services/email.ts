@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import prisma from '../models/prisma';
-import type { Content, Blogger } from '../types';
+import prisma from '../models/prisma.js';
+import type { Content, Blogger } from '../types/index.js';
 
 export class EmailService {
   private transporter: nodemailer.Transporter | null = null;

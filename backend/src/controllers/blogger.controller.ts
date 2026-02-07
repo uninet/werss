@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { bloggerService } from '../services/blogger-service';
-import { crawlerService } from '../services/crawler';
+import { bloggerService } from '../services/blogger-service.js';
+import { crawlerService } from '../services/crawler.js';
 
 export const bloggerController = {
   // 获取所有博主

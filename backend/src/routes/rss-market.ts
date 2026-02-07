@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { rssMarketController } from '../controllers/rssMarket.controller';
-import { authMiddleware } from '../middleware/auth';
-import { asyncHandler } from '../utils/errors';
+import { rssMarketController } from '../controllers/rssMarket.controller.js';
+import { authMiddleware } from '../middleware/auth.js';
+import { asyncHandler } from '../utils/errors.js';
 
 const router = Router();
 

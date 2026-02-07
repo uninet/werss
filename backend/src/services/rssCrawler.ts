@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
-import type { Blogger, Content } from '../types';
+import type { Blogger, Content } from '../types/index.js';
 
 /**
  * RSS 抓取服务

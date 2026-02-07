@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '../models/prisma';
+import prisma from '../models/prisma.js';
 
 export const statsController = {
   getAll: async (req: Request, res: Response) => {

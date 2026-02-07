@@ -1,11 +1,11 @@
-import type { Blogger, Content } from '../../types';
+import type { Blogger, Content } from '../../types/index.js';
 import type {
   ICrawler,
   ICrawlerConfig,
   IContentRepository,
   CrawlResult,
   CrawlStats,
-} from './types';
+} from './types.js';
 
 export class CrawlerOrchestrator {
   private crawlers: Map<string, ICrawler> = new Map();

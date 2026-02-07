@@ -1,6 +1,6 @@
-import prisma from '../../models/prisma';
-import type { Blogger, Content } from '../../types';
-import type { IContentRepository } from '../crawler/types';
+import prisma from '../../models/prisma.js';
+import type { Blogger, Content } from '../../types/index.js';
+import type { IContentRepository } from '../crawler/types.js';
 
 // Helper to map Prisma Content to App Content
 const mapContent = (c: any): Content => ({

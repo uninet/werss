@@ -1,6 +1,6 @@
-import prisma from '../models/prisma';
-import { AppError } from '../utils/errors';
-import type { Content, CreateContentInput } from '../types';
+import prisma from '../models/prisma.js';
+import { AppError } from '../utils/errors.js';
+import type { Content, CreateContentInput } from '../types/index.js';
 
 const mapContent = (c: any): any => {
   if (c.bloggerId !== undefined) {

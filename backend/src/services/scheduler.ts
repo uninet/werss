@@ -1,6 +1,6 @@
 import cron from 'node-cron';
-import { crawlerService } from './crawler';
-import { emailService } from './email';
+import { crawlerService } from './crawler.js';
+import { emailService } from './email.js';
 
 export class SchedulerService {
   private task: cron.ScheduledTask | null = null;

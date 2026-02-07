@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { schedulerService } from '../services/scheduler';
-import { emailService } from '../services/email';
+import { schedulerService } from '../services/scheduler.js';
+import { emailService } from '../services/email.js';
 
 export const schedulerController = {
   // 获取调度器状态

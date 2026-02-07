@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '../models/prisma';
+import prisma from '../models/prisma.js';
 
 // Helper to map Prisma result to API response
 const mapRssFeed = (f: any): any => ({

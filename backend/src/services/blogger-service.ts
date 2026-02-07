@@ -1,6 +1,6 @@
-import prisma from '../models/prisma';
-import { AppError } from '../utils/errors';
-import type { Blogger, CreateBloggerInput, UpdateBloggerInput } from '../types';
+import prisma from '../models/prisma.js';
+import { AppError } from '../utils/errors.js';
+import type { Blogger, CreateBloggerInput, UpdateBloggerInput } from '../types/index.js';
 
 // Helper to map Prisma result to API response
 const mapBlogger = (b: any): any => {

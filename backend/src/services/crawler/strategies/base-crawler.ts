@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import type { Blogger, Content } from '../../../types';
-import type { ICrawler, ICrawlerConfig } from '../types';
+import type { Blogger, Content } from '../../../types/index.js';
+import type { ICrawler, ICrawlerConfig } from '../types.js';
 
 export abstract class BaseCrawler implements ICrawler {
   abstract readonly type: string;
