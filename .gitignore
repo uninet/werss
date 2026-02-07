@@ -103,3 +103,5 @@ E2E-WORKFLOW-EXECUTION-TRACKING.csv
 
 # Vercel 配置（如果不需要）
 .vercel/
+.vercel
+.env*.local
