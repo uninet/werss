@@ -57,6 +57,10 @@
     "github",
     "monitoring"
   ],
+  "engines": {
+    "node": ">=20.18.1",
+    "npm": ">=10.0.0"
+  },
   "author": "AI Tracker",
   "license": "MIT"
 }
