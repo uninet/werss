@@ -1,5 +1,5 @@
 # Railway 部署 Dockerfile
-FROM node:18-alpine
+FROM node:20-alpine
 
 # 安装必要的系统依赖
 RUN apk add --no-cache openssl
