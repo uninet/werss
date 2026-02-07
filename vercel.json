@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd backend && rm -rf dist && npm ci && npm run build && cd .. && rm -rf api/backend-dist && mkdir -p api/backend-dist && cp backend/dist/bundle.js api/backend-dist/ && cd frontend && npm install && npx vite build",
+  "buildCommand": "cd backend && rm -rf dist && npm ci && npm run build && cd .. && rm -rf api/backend-dist && mkdir -p api/backend-dist && cp backend/dist/bundle.js api/backend-dist/ && cp -r backend/node_modules/@prisma api/backend-dist/ && cp -r backend/node_modules/.prisma api/backend-dist/ && cd frontend && npm install && npx vite build",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {"source": "/api/(.*)", "destination": "/api/index"},

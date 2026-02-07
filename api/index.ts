@@ -1,4 +1,12 @@
 import serverless from 'serverless-http';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// 设置 Prisma 查找路径
+process.env.PRISMA_QUERY_ENGINE_LIBRARY = join(__dirname, 'backend-dist/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node');
 
 // 创建一个包装函数来处理异步导入
 async function createHandler() {
@@ -6,7 +14,8 @@ async function createHandler() {
   console.log('[API] Environment:', {
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL ? 'SET' : 'NOT SET',
-    JWT_SECRET: process.env.JWT_SECRET ? 'SET' : 'NOT SET'
+    JWT_SECRET: process.env.JWT_SECRET ? 'SET' : 'NOT SET',
+    PRISMA_QUERY_ENGINE_LIBRARY: process.env.PRISMA_QUERY_ENGINE_LIBRARY
   });
   
   try {
