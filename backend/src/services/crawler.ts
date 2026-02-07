@@ -93,8 +93,23 @@ class CrawlerServiceFacade {
   }
 }
 
-// 导出单例实例
-export const crawlerService = new CrawlerServiceFacade();
+// 懒加载单例实例，避免在模块加载时初始化
+let crawlerServiceInstance: CrawlerServiceFacade | null = null;
+
+export function getCrawlerService(): CrawlerServiceFacade {
+  if (!crawlerServiceInstance) {
+    console.log('[CrawlerService] Initializing crawler service...');
+    crawlerServiceInstance = new CrawlerServiceFacade();
+  }
+  return crawlerServiceInstance;
+}
+
+// 为了保持向后兼容，使用 getter 导出
+export const crawlerService = {
+  get instance() {
+    return getCrawlerService();
+  }
+};
 
 // 为了保持向后兼容，保留旧的导出方式
 export { CrawlerServiceFacade as CrawlerService };

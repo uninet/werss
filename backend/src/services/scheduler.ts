@@ -33,7 +33,7 @@ export class SchedulerService {
       console.log('🚀 Starting daily crawling task...');
 
       // 1. 爬取所有活跃博主
-      const results = await crawlerService.crawlAllActiveBloggers();
+      const results = await crawlerService.instance.crawlAllActiveBloggers();
       
       // 2. 收集所有新内容
       const allNewContents = results.flatMap(r => r.contents);
@@ -54,7 +54,7 @@ export class SchedulerService {
 
   async runManualCrawl(): Promise<{ success: boolean; message: string; count: number }> {
     try {
-      const results = await crawlerService.crawlAllActiveBloggers();
+      const results = await crawlerService.instance.crawlAllActiveBloggers();
       const allNewContents = results.flatMap(r => r.contents);
       
       return {

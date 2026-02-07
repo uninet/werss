@@ -76,7 +76,7 @@ export const bloggerController = {
   // 触发单个博主抓取
   crawlBlogger: async (req: Request, res: Response) => {
     const id = (req as any).parsedId;
-    const result = await crawlerService.crawlBlogger(id);
+    const result = await crawlerService.instance.crawlBlogger(id);
     res.json({
       success: true,
       message: '抓取任务已启动',
@@ -86,7 +86,7 @@ export const bloggerController = {
 
   // 触发所有博主抓取
   crawlAll: async (req: Request, res: Response) => {
-    const result = await crawlerService.crawlAll();
+    const result = await crawlerService.instance.crawlAll();
     res.json({
       success: true,
       message: '全量抓取任务已启动',
@@ -96,7 +96,7 @@ export const bloggerController = {
 
   // 检查活跃博主
   checkActive: async (req: Request, res: Response) => {
-    const result = await crawlerService.checkActiveBloggers();
+    const result = await crawlerService.instance.checkActiveBloggers();
     res.json({
       success: true,
       message: '活跃检查完成',
@@ -106,7 +106,7 @@ export const bloggerController = {
 
   // 清理不活跃博主
   cleanupInactive: async (req: Request, res: Response) => {
-    const result = await crawlerService.cleanupInactiveBloggers();
+    const result = await crawlerService.instance.cleanupInactiveBloggers();
     res.json({
       success: true,
       message: '清理任务完成',
