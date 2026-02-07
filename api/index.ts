@@ -1,28 +1,25 @@
 import serverless from 'serverless-http';
-import express from 'express';
 
 // 创建一个包装函数来处理异步导入
 async function createHandler() {
+  console.log('[API] Starting handler creation...');
+  console.log('[API] Environment:', {
+    NODE_ENV: process.env.NODE_ENV,
+    DATABASE_URL: process.env.DATABASE_URL ? 'SET' : 'NOT SET',
+    JWT_SECRET: process.env.JWT_SECRET ? 'SET' : 'NOT SET'
+  });
+  
   try {
-    // 尝试导入后端应用
-    const module = await import('./backend-dist/index.js');
+    // 尝试导入后端应用（使用打包后的 bundle.js）
+    console.log('[API] Importing backend bundle...');
+    const module = await import('./backend-dist/bundle.js');
     const app = module.default;
     console.log('[API] Backend app loaded successfully');
     return serverless(app);
   } catch (error) {
     console.error('[API] Failed to load backend app:', error);
-    
-    // 创建错误处理应用
-    const errorApp = express();
-    errorApp.use((req, res) => {
-      res.status(500).json({
-        error: 'Backend initialization failed',
-        message: error.message,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-      });
-    });
-    
-    return serverless(errorApp);
+    console.error('[API] Error stack:', error.stack);
+    throw error;
   }
 }
 
@@ -30,10 +27,23 @@ async function createHandler() {
 let handlerPromise = null;
 
 export default async function handler(req, res) {
-  if (!handlerPromise) {
-    handlerPromise = createHandler();
-  }
+  console.log('[API] Request:', req.method, req.url);
   
-  const serverlessHandler = await handlerPromise;
-  return serverlessHandler(req, res);
+  try {
+    if (!handlerPromise) {
+      console.log('[API] Creating new handler instance...');
+      handlerPromise = createHandler();
+    }
+    
+    const serverlessHandler = await handlerPromise;
+    console.log('[API] Handler ready, processing request');
+    return serverlessHandler(req, res);
+  } catch (error) {
+    console.error('[API] Handler error:', error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
 }
